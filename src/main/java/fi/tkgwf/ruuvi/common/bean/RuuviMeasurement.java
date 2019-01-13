@@ -37,7 +37,7 @@ public class RuuviMeasurement {
      */
     private Double accelerationZ;
     /**
-     * Battery voltage in volts
+     * Battery voltage in Volts
      */
     private Double batteryVoltage;
     /**
@@ -54,6 +54,13 @@ public class RuuviMeasurement {
      */
     private Integer measurementSequenceNumber;
 
+    /**
+     * Gets Ruuvi Data Format
+     * <p>
+     * See: https://github.com/ruuvi/ruuvi-sensor-protocols
+     *
+     * @return Ruuvi data format or null if not available
+     */
     public Integer getDataFormat() {
         return dataFormat;
     }
@@ -62,6 +69,11 @@ public class RuuviMeasurement {
         this.dataFormat = dataFormat;
     }
 
+    /**
+     * Get temperature, in Celcius.
+     *
+     * @return temperature measurement or null if not available
+     */
     public Double getTemperature() {
         return temperature;
     }
@@ -70,6 +82,11 @@ public class RuuviMeasurement {
         this.temperature = temperature;
     }
 
+    /**
+     * Get relative humidity, in percentage.
+     *
+     * @return relative humidity measurement or null if not available
+     */
     public Double getHumidity() {
         return humidity;
     }
@@ -78,6 +95,11 @@ public class RuuviMeasurement {
         this.humidity = humidity;
     }
 
+    /**
+     * Get pressure, in Pascal.
+     *
+     * @return pressure measurement or null if not available
+     */
     public Double getPressure() {
         return pressure;
     }
@@ -86,6 +108,13 @@ public class RuuviMeasurement {
         this.pressure = pressure;
     }
 
+    /**
+     * Get acceleration on X axis, in g.
+     * <p>
+     * See https://en.wikipedia.org/wiki/Standard_gravity
+     *
+     * @return acceleration measurement or null if not available
+     */
     public Double getAccelerationX() {
         return accelerationX;
     }
@@ -94,6 +123,13 @@ public class RuuviMeasurement {
         this.accelerationX = accelerationX;
     }
 
+    /**
+     * Get acceleration on Y axis, in g.
+     * <p>
+     * See https://en.wikipedia.org/wiki/Standard_gravity
+     *
+     * @return acceleration measurement or null if not available
+     */
     public Double getAccelerationY() {
         return accelerationY;
     }
@@ -102,6 +138,13 @@ public class RuuviMeasurement {
         this.accelerationY = accelerationY;
     }
 
+    /**
+     * Get acceleration on Z axis, in g.
+     * <p>
+     * See https://en.wikipedia.org/wiki/Standard_gravity
+     *
+     * @return acceleration measurement or null if not available
+     */
     public Double getAccelerationZ() {
         return accelerationZ;
     }
@@ -110,6 +153,12 @@ public class RuuviMeasurement {
         this.accelerationZ = accelerationZ;
     }
 
+
+    /**
+     * Get battery voltage, in Volts.
+     *
+     * @return battery voltage measurement or null if not available
+     */
     public Double getBatteryVoltage() {
         return batteryVoltage;
     }
@@ -118,6 +167,13 @@ public class RuuviMeasurement {
         this.batteryVoltage = batteryVoltage;
     }
 
+    /**
+     * Get Tx power, in dBm.
+     * <p>
+     * See https://en.wikipedia.org/wiki/DBm
+     *
+     * @return Tx power or null if not available
+     */
     public Integer getTxPower() {
         return txPower;
     }
@@ -126,6 +182,13 @@ public class RuuviMeasurement {
         this.txPower = txPower;
     }
 
+    /**
+     * Get movement counter value.
+     * <p>
+     * For details, see https://github.com/ruuvi/ruuvi-sensor-protocols
+     *
+     * @return movement counter value or null if not available
+     */
     public Integer getMovementCounter() {
         return movementCounter;
     }
@@ -134,11 +197,36 @@ public class RuuviMeasurement {
         this.movementCounter = movementCounter;
     }
 
+    /**
+     * Get measurement sequence number.
+     * <p>
+     * For details, see https://github.com/ruuvi/ruuvi-sensor-protocols
+     *
+     * @return measurement sequence number or null if not available
+     */
     public Integer getMeasurementSequenceNumber() {
         return measurementSequenceNumber;
     }
 
     public void setMeasurementSequenceNumber(Integer measurementSequenceNumber) {
         this.measurementSequenceNumber = measurementSequenceNumber;
+    }
+
+    @Override
+    public String toString() {
+        return new StringBuffer("RuuviMeasurement(")
+                .append("dataFormat=").append(dataFormat)
+                .append(", temperature=").append(temperature)
+                .append(", humidity=").append(humidity)
+                .append(", pressure=").append(pressure)
+                .append(", accelerationX=").append(accelerationX)
+                .append(", accelerationY=").append(accelerationY)
+                .append(", accelerationZ=").append(accelerationZ)
+                .append(", batteryVoltage=").append(batteryVoltage)
+                .append(", txPower=").append(txPower)
+                .append(", movementCounter=").append(movementCounter)
+                .append(", measurementSequenceNumber=").append(measurementSequenceNumber)
+                .append(")")
+                .toString();
     }
 }
