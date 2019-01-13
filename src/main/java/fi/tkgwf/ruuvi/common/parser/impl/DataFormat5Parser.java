@@ -39,7 +39,7 @@ public class DataFormat5Parser implements DataFormatParser {
         if (!ByteUtils.isMaxSignedShort(data[9], data[10])) {
             m.setAccelerationY((data[9] << 8 | data[10] & 0xFF) / 1000d);
         }
-        if (!ByteUtils.isMaxSignedShort(data[11], data[2])) {
+        if (!ByteUtils.isMaxSignedShort(data[11], data[12])) {
             m.setAccelerationZ((data[11] << 8 | data[12] & 0xFF) / 1000d);
         }
 
@@ -54,7 +54,7 @@ public class DataFormat5Parser implements DataFormatParser {
         if (!ByteUtils.isMaxUnsignedByte(data[15])) {
             m.setMovementCounter(data[15] & 0xFF);
         }
-        if (!ByteUtils.isMaxSignedShort(data[16], data[17])) {
+        if (!ByteUtils.isMaxUnsignedShort(data[16], data[17])) {
             m.setMeasurementSequenceNumber((Integer) (data[16] & 0xFF) << 8 | data[17] & 0xFF);
         }
 

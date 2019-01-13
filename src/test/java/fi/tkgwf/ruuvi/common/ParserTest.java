@@ -212,6 +212,47 @@ public class ParserTest extends TestCase {
         assertEquals((Integer) 4, m.getTxPower());
     }
 
+    /**
+     * See https://github.com/ruuvi/ruuvi-sensor-protocols and "reference" python implementation
+     */
+    @Test
+    public void testDataFormat5AllUnavailable() {
+        // {format}{temp}{humidity}{pressure}{accX}{accY}{accZ}{power_info}{movement_counter}{measurement_sequence}{mac}
+        RuuviMeasurement m = parser.parse(dataWithCompany("05-7FFF-FFFF-FFFF-7FFF-7FFF-7FFF-FFFF-FF-FFFF-CBB8334C884F".replace("-", "")));
+        assertNull( m.getTemperature());
+        assertNull( m.getPressure());
+        assertNull( m.getHumidity());
+        assertNull( m.getBatteryVoltage());
+        assertNull( m.getAccelerationX());
+        assertNull( m.getAccelerationY());
+        assertNull( m.getAccelerationZ());
+        assertEquals((Integer) 5, m.getDataFormat());
+        assertNull( m.getMeasurementSequenceNumber());
+        assertNull( m.getMovementCounter());
+        assertNull( m.getTxPower());
+    }
+
+
+    /**
+     * See https://github.com/ruuvi/ruuvi-sensor-protocols and "reference" python implementation
+     */
+    @Test
+    public void testDataFormat5SomeUnavailable() {
+        // {format}{temp}{humidity}{pressure}{accX}{accY}{accZ}{power_info}{movement_counter}{measurement_sequence}{mac}
+        RuuviMeasurement m = parser.parse(dataWithCompany("05-12FC-FFFF-C37C-7FFF-7FFF-7FFF-FFFF-FF-FFFF-CBB8334C884F".replace("-", "")));
+        assertEquals(24.3, m.getTemperature());
+        assertEquals(100044.0, m.getPressure());
+        assertNull( m.getHumidity());
+        assertNull( m.getBatteryVoltage());
+        assertNull( m.getAccelerationX());
+        assertNull( m.getAccelerationY());
+        assertNull( m.getAccelerationZ());
+        assertEquals((Integer) 5, m.getDataFormat());
+        assertNull( m.getMeasurementSequenceNumber());
+        assertNull( m.getMovementCounter());
+        assertNull( m.getTxPower());
+    }
+
     @Test
     public void testInvalid() {
         assertNull(parser.parse("XXX".getBytes()));
