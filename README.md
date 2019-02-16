@@ -2,16 +2,7 @@
 
 ruuvitag-common is a library of utilities to work with RuuviTags, main purpose is providing parsers for parsing raw data from RuuviTags
 
-### WARNING: This library is currently being developed, breaking changes will most likely happen in the near future, additionally the current code is **UNTESTED**, blindly refactored out of RuuviCollector
-
-That being said, comments, suggestions and other contributions are more than welcome. :)
-
-TODO: decide best proper/best naming convention
-TODO: general refactoring and cleanup
-TODO: check javadoc and comments
-TODO: write proper documentation
-TODO: write tests
-TODO: publish to maven central to avoid needing to build the library locally
+Do note that this library is still being developed so comments, suggestions and other contributions are more than welcome. :)
 
 ### How to use
 
@@ -23,7 +14,7 @@ TODO: publish to maven central to avoid needing to build the library locally
 <dependency>
     <groupId>fi.tkgwf.ruuvi</groupId>
     <artifactId>ruuvi-common</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>1.0.0</version>
 </dependency>
 ```
 
