@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata>
+  <groupId>fi.tkgwf.ruuvi</groupId>
+  <artifactId>ruuvitag-common</artifactId>
+  <versioning>
+    <versions>
+      <version>1.0.1-SNAPSHOT</version>
+    </versions>
+    <lastUpdated>20190430132319</lastUpdated>
+  </versioning>
+</metadata>
