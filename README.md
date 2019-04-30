@@ -6,19 +6,34 @@ Do note that this library is still being developed so comments, suggestions and 
 
 ### How to use
 
-1. Clone this repository
-2. Build and install the library locally: `mvn clean install`
-3. Add the dependency to your project:
+1. Add the repository to your pom:
+
+```xml
+<repositories>
+    <repository>
+        <id>ruuvitag-common-java-mvn-repo</id>
+        <url>https://raw.github.com/Scrin/ruuvitag-common-java/mvn-repo/</url>
+        <snapshots>
+            <enabled>true</enabled>
+            <updatePolicy>always</updatePolicy>
+        </snapshots>
+    </repository>
+</repositories>
+```
+
+Alternative option: You can also clone this repository, then build and install the library locally with: `mvn clean install`
+
+2. Add the dependency to your project:
 
 ```xml
 <dependency>
     <groupId>fi.tkgwf.ruuvi</groupId>
-    <artifactId>ruuvi-common</artifactId>
-    <version>1.0.0</version>
+    <artifactId>ruuvitag-common</artifactId>
+    <version>1.0.1</version>
 </dependency>
 ```
 
-4. Use the library in your code:
+3. Use the library in your code:
 
 ```java
 import fi.tkgwf.ruuvi.common.bean.RuuviMeasurement;
