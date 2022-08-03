@@ -31,10 +31,23 @@ public abstract class ByteUtils {
      * @param b1 1st byte to check
      * @param b2 2nd byte to check
      * @return true if the pair of bytes represent the max value a signed short
-     * can be
+     *         can be
      */
     public static boolean isMaxSignedShort(byte b1, byte b2) {
         return isMaxSignedByte(b1) && isMaxUnsignedByte(b2);
+    }
+
+    /**
+     * Convenience method for checking whether the supplied bytes forming a
+     * 16bit short is the min signed short.
+     *
+     * @param b1 1st byte to check
+     * @param b2 2nd byte to check
+     * @return true if the pair of bytes represent the min value a signed short
+     *         can be
+     */
+    public static boolean isMinSignedShort(byte b1, byte b2) {
+        return (b1 & 0xff) == 0x80 && (b2 & 0xff) == 0x00;
     }
 
     /**
@@ -44,7 +57,7 @@ public abstract class ByteUtils {
      * @param b1 1st byte to check
      * @param b2 2nd byte to check
      * @return true if the pair of bytes represent the max value an unsigned
-     * short can be
+     *         short can be
      */
     public static boolean isMaxUnsignedShort(byte b1, byte b2) {
         return isMaxUnsignedByte(b1) && isMaxUnsignedByte(b2);

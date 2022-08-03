@@ -7,11 +7,12 @@ import fi.tkgwf.ruuvi.common.parser.DataFormatParser;
 
 public class DataFormat5Parser implements DataFormatParser {
 
-    private final int[] RUUVI_COMPANY_IDENTIFIER = {0x99, 0x04}; // 0x0499
+    private final int[] RUUVI_COMPANY_IDENTIFIER = { 0x99, 0x04 }; // 0x0499
 
     @Override
     public RuuviMeasurement parse(byte[] data) {
-        if (data.length < 2 || (data[0] & 0xFF) != RUUVI_COMPANY_IDENTIFIER[0] || (data[1] & 0xFF) != RUUVI_COMPANY_IDENTIFIER[1]) {
+        if (data.length < 2 || (data[0] & 0xFF) != RUUVI_COMPANY_IDENTIFIER[0]
+                || (data[1] & 0xFF) != RUUVI_COMPANY_IDENTIFIER[1]) {
             return null;
         }
         data = Arrays.copyOfRange(data, 2, data.length); // discard the first 2 bytes, the company identifier
@@ -21,7 +22,7 @@ public class DataFormat5Parser implements DataFormatParser {
         RuuviMeasurement m = new RuuviMeasurement();
         m.setDataFormat(data[0] & 0xFF);
 
-        if (!ByteUtils.isMaxSignedShort(data[1], data[2])) {
+        if (!ByteUtils.isMinSignedShort(data[1], data[2])) {
             m.setTemperature((data[1] << 8 | data[2] & 0xFF) / 200d);
         }
 
@@ -33,13 +34,13 @@ public class DataFormat5Parser implements DataFormatParser {
             m.setPressure((double) ((data[5] & 0xFF) << 8 | data[6] & 0xFF) + 50000);
         }
 
-        if (!ByteUtils.isMaxSignedShort(data[7], data[8])) {
+        if (!ByteUtils.isMinSignedShort(data[7], data[8])) {
             m.setAccelerationX((data[7] << 8 | data[8] & 0xFF) / 1000d);
         }
-        if (!ByteUtils.isMaxSignedShort(data[9], data[10])) {
+        if (!ByteUtils.isMinSignedShort(data[9], data[10])) {
             m.setAccelerationY((data[9] << 8 | data[10] & 0xFF) / 1000d);
         }
-        if (!ByteUtils.isMaxSignedShort(data[11], data[12])) {
+        if (!ByteUtils.isMinSignedShort(data[11], data[12])) {
             m.setAccelerationZ((data[11] << 8 | data[12] & 0xFF) / 1000d);
         }
 
