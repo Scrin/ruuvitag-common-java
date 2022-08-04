@@ -8,8 +8,6 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.junit.Before;
 
-import java.util.Arrays;
-
 import org.apache.commons.codec.binary.Hex;
 
 public class ParserTest extends TestCase {
