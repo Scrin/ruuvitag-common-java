@@ -16,6 +16,7 @@ public class AnyDataFormatParser implements DataFormatParser {
         parsers.add(new DataFormat3Parser());
         parsers.add(new DataFormat4Parser());
         parsers.add(new DataFormat5Parser());
+        parsers.add(new DataFormat6Parser());
     }
     
     @Override

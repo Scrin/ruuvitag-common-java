@@ -1,14 +1,14 @@
 package fi.tkgwf.ruuvi.common;
 
+import org.apache.commons.codec.DecoderException;
+import org.apache.commons.codec.binary.Hex;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+
 import fi.tkgwf.ruuvi.common.bean.RuuviMeasurement;
 import fi.tkgwf.ruuvi.common.parser.impl.AnyDataFormatParser;
 import junit.framework.TestCase;
-import org.apache.commons.codec.DecoderException;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.Before;
-
-import org.apache.commons.codec.binary.Hex;
 
 public class ParserTest extends TestCase {
     private AnyDataFormatParser parser;
@@ -48,6 +48,7 @@ public class ParserTest extends TestCase {
         }
     }
 
+    @Override
     @Before
     public void setUp() {
         this.parser = new AnyDataFormatParser();
@@ -246,8 +247,7 @@ public class ParserTest extends TestCase {
      */
     @Test
     public void testDataFormat5TestVectorValid() {
-        RuuviMeasurement m = parser
-                .parse(dataWithCompany("0512FC5394C37C0004FFFC040CAC364200CDCBB8334C884F"));
+        RuuviMeasurement m = parser.parse(dataWithCompany("0512FC5394C37C0004FFFC040CAC364200CDCBB8334C884F"));
         assertEquals(24.3, m.getTemperature());
         assertEquals(100044.0, m.getPressure());
         assertEquals(53.49, m.getHumidity());
@@ -267,8 +267,7 @@ public class ParserTest extends TestCase {
      */
     @Test
     public void testDataFormat5TestVectorMaxValues() {
-        RuuviMeasurement m = parser
-                .parse(dataWithCompany("057FFFFFFEFFFE7FFF7FFF7FFFFFDEFEFFFECBB8334C884F"));
+        RuuviMeasurement m = parser.parse(dataWithCompany("057FFFFFFEFFFE7FFF7FFF7FFFFFDEFEFFFECBB8334C884F"));
         assertEquals(163.835, m.getTemperature());
         assertEquals(115534.0, m.getPressure());
         assertEquals(163.8350, m.getHumidity());
@@ -288,8 +287,7 @@ public class ParserTest extends TestCase {
      */
     @Test
     public void testDataFormat5TestVectorMinValues() {
-        RuuviMeasurement m = parser
-                .parse(dataWithCompany("058001000000008001800180010000000000CBB8334C884F"));
+        RuuviMeasurement m = parser.parse(dataWithCompany("058001000000008001800180010000000000CBB8334C884F"));
         assertEquals(-163.835, m.getTemperature());
         assertEquals(50000.0, m.getPressure());
         assertEquals(0.0, m.getHumidity());
@@ -309,8 +307,7 @@ public class ParserTest extends TestCase {
      */
     @Test
     public void testDataFormat5TestVectorInvalidValues() {
-        RuuviMeasurement m = parser
-                .parse(dataWithCompany("058000FFFFFFFF800080008000FFFFFFFFFFFFFFFFFFFFFF"));
+        RuuviMeasurement m = parser.parse(dataWithCompany("058000FFFFFFFF800080008000FFFFFFFFFFFFFFFFFFFFFF"));
         assertNull(m.getTemperature());
         assertNull(m.getPressure());
         assertNull(m.getHumidity());
@@ -322,6 +319,99 @@ public class ParserTest extends TestCase {
         assertNull(m.getMeasurementSequenceNumber());
         assertNull(m.getMovementCounter());
         assertNull(m.getTxPower());
+    }
+
+    /**
+     * "Valid data" official test vector
+     * https://docs.ruuvi.com/communication/bluetooth-advertisements/data-format-6
+     */
+    @Test
+    public void testDataFormat6TestVectorValid() {
+        // Official test vector from https://docs.ruuvi.com/communication/bluetooth-advertisements/data-format-6
+        RuuviMeasurement m = parser
+                .parse(dataWithCompany("06170C5668C79E007000C90501D9XXCD004C884F".replace('X', '0')));
+        assertEquals(29.5, m.getTemperature());
+        assertEquals(101102.0, m.getPressure());
+        assertEquals(55.3, m.getHumidity());
+        assertEquals(11.2, m.getPm25());
+        assertEquals((Integer) 201, m.getCo2());
+        assertEquals((Integer) 10, m.getVocIndex());
+        assertEquals((Integer) 2, m.getNoxIndex());
+        assertEquals(13026.67, m.getLuminosity(), 0.01);
+        assertEquals((Integer) 6, m.getDataFormat());
+        assertEquals((Integer) 205, m.getMeasurementSequenceNumber());
+        assertFalse(m.isCalibrationInProgress());
+        assertNull(m.getBatteryVoltage());
+        assertNull(m.getAccelerationX());
+    }
+
+    /**
+     * "Maximum values" official test vector
+     * https://docs.ruuvi.com/communication/bluetooth-advertisements/data-format-6
+     */
+    @Test
+    public void testDataFormat6TestVectorMaxValues() {
+        RuuviMeasurement m = parser
+                .parse(dataWithCompany("067FFF9C40FFFE27109C40FAFAFEXXFF074C8F4F".replace('X', '0')));
+        assertEquals(163.835, m.getTemperature());
+        assertEquals(115534.0, m.getPressure());
+        assertEquals(100.0, m.getHumidity());
+        assertEquals(1000.0, m.getPm25());
+        assertEquals((Integer) 40000, m.getCo2());
+        assertEquals((Integer) 500, m.getVocIndex());
+        assertEquals((Integer) 500, m.getNoxIndex());
+        assertEquals(65535.0, m.getLuminosity(), 0.01);
+        assertEquals((Integer) 6, m.getDataFormat());
+        assertEquals((Integer) 255, m.getMeasurementSequenceNumber());
+        assertTrue(m.isCalibrationInProgress());
+        assertNull(m.getBatteryVoltage());
+        assertNull(m.getAccelerationX());
+    }
+
+    /**
+     * "Minimum values" official test vector
+     * https://docs.ruuvi.com/communication/bluetooth-advertisements/data-format-6
+     */
+    @Test
+    public void testDataFormat6TestVectorMinValues() {
+        RuuviMeasurement m = parser
+                .parse(dataWithCompany("0680010000000000000000000000XX00004C884F".replace('X', '0')));
+        assertEquals(-163.835, m.getTemperature());
+        assertEquals(50000.0, m.getPressure());
+        assertEquals(0.0, m.getHumidity());
+        assertEquals(0.0, m.getPm25());
+        assertEquals((Integer) 0, m.getCo2());
+        assertEquals((Integer) 0, m.getVocIndex());
+        assertEquals((Integer) 0, m.getNoxIndex());
+        assertEquals(0.0, m.getLuminosity());
+        assertEquals((Integer) 6, m.getDataFormat());
+        assertEquals((Integer) 0, m.getMeasurementSequenceNumber());
+        assertFalse(m.isCalibrationInProgress());
+        assertNull(m.getBatteryVoltage());
+        assertNull(m.getAccelerationX());
+    }
+
+    /**
+     * "Invalid values" official test vector
+     * https://docs.ruuvi.com/communication/bluetooth-advertisements/data-format-6
+     */
+    @Test
+    public void testDataFormat6TestVectorInvalidValues() {
+        RuuviMeasurement m = parser
+                .parse(dataWithCompany("068000FFFFFFFFFFFFFFFFFFFFFFXXFFFFFFFFFF".replace('X', '0')));
+        assertNull(m.getTemperature());
+        assertNull(m.getPressure());
+        assertNull(m.getHumidity());
+        assertNull(m.getPm25());
+        assertNull(m.getCo2());
+        assertNull(m.getVocIndex());
+        assertNull(m.getNoxIndex());
+        assertNull(m.getLuminosity());
+        assertEquals((Integer) 6, m.getDataFormat());
+        assertEquals((Integer) 255, m.getMeasurementSequenceNumber());
+        assertTrue(m.isCalibrationInProgress());
+        assertNull(m.getBatteryVoltage());
+        assertNull(m.getAccelerationX());
     }
 
     @Test
