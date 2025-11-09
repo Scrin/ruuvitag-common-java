@@ -1,5 +1,12 @@
 # Changelog
 
+## v1.1.0 (unreleased)
+
+- Added support for Ruuvi Data Format 6 (Ruuvi Air with air quality measurements)
+- Added support for Ruuvi Data Format E1 (Extended v1 - Ruuvi Air BT5.0+ with enhanced measurements)
+- Added Air Quality Index calculation from PM2.5 and CO2 measurements
+- Added calibration status tracking for Format 6+ sensors
+
 ### v1.0.2
 
 - Bug fix: detection of NA values in signed fields (temperate and acceleration) has been corrected.
