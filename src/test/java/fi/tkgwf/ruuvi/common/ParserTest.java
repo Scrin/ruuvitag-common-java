@@ -330,76 +330,6 @@ public class ParserTest extends TestCase {
     }
 
     /**
-     * "Valid data" official test vector
-     * https://docs.ruuvi.com/communication/bluetooth-advertisements/data-format-6
-     */
-    @Test
-    public void testDataFormat6TestVectorValid() {
-        // Official test vector from https://docs.ruuvi.com/communication/bluetooth-advertisements/data-format-6
-        RuuviMeasurement m = parser
-                .parse(dataWithCompany("06170C5668C79E007000C90501D9XXCD004C884F".replace('X', '0')));
-        assertEquals(29.5, m.getTemperature());
-        assertEquals(101102.0, m.getPressure());
-        assertEquals(55.3, m.getHumidity());
-        assertEquals(11.2, m.getPm25());
-        assertEquals((Integer) 201, m.getCo2());
-        assertEquals((Integer) 10, m.getVocIndex());
-        assertEquals((Integer) 2, m.getNoxIndex());
-        assertEquals(13026.67, m.getLuminosity(), 0.01);
-        assertEquals((Integer) 6, m.getDataFormat());
-        assertEquals((Integer) 205, m.getMeasurementSequenceNumber());
-        assertFalse(m.isCalibrationInProgress());
-        assertNull(m.getBatteryVoltage());
-        assertNull(m.getAccelerationX());
-    }
-
-    /**
-     * "Maximum values" official test vector
-     * https://docs.ruuvi.com/communication/bluetooth-advertisements/data-format-6
-     */
-    @Test
-    public void testDataFormat6TestVectorMaxValues() {
-        RuuviMeasurement m = parser
-                .parse(dataWithCompany("067FFF9C40FFFE27109C40FAFAFEXXFF074C8F4F".replace('X', '0')));
-        assertEquals(163.835, m.getTemperature());
-        assertEquals(115534.0, m.getPressure());
-        assertEquals(100.0, m.getHumidity());
-        assertEquals(1000.0, m.getPm25());
-        assertEquals((Integer) 40000, m.getCo2());
-        assertEquals((Integer) 500, m.getVocIndex());
-        assertEquals((Integer) 500, m.getNoxIndex());
-        assertEquals(65535.0, m.getLuminosity(), 0.01);
-        assertEquals((Integer) 6, m.getDataFormat());
-        assertEquals((Integer) 255, m.getMeasurementSequenceNumber());
-        assertTrue(m.isCalibrationInProgress());
-        assertNull(m.getBatteryVoltage());
-        assertNull(m.getAccelerationX());
-    }
-
-    /**
-     * "Minimum values" official test vector
-     * https://docs.ruuvi.com/communication/bluetooth-advertisements/data-format-6
-     */
-    @Test
-    public void testDataFormat6TestVectorMinValues() {
-        RuuviMeasurement m = parser
-                .parse(dataWithCompany("0680010000000000000000000000XX00004C884F".replace('X', '0')));
-        assertEquals(-163.835, m.getTemperature());
-        assertEquals(50000.0, m.getPressure());
-        assertEquals(0.0, m.getHumidity());
-        assertEquals(0.0, m.getPm25());
-        assertEquals((Integer) 0, m.getCo2());
-        assertEquals((Integer) 0, m.getVocIndex());
-        assertEquals((Integer) 0, m.getNoxIndex());
-        assertEquals(0.0, m.getLuminosity());
-        assertEquals((Integer) 6, m.getDataFormat());
-        assertEquals((Integer) 0, m.getMeasurementSequenceNumber());
-        assertFalse(m.isCalibrationInProgress());
-        assertNull(m.getBatteryVoltage());
-        assertNull(m.getAccelerationX());
-    }
-
-    /**
      * "Invalid values" official test vector
      * https://docs.ruuvi.com/communication/bluetooth-advertisements/data-format-6
      */
@@ -1404,4 +1334,471 @@ public class ParserTest extends TestCase {
         // assertFalse(m.isRtcRunningOnBoot());
     }
 
+    /**
+     * test_ruuvi_endpoint_6_get_ok
+     * Comprehensive test with mixed values from
+     * https://github.com/ruuvi/ruuvi.endpoints.c/blob/8183d39ae8d0cd1c284881b10804af9b066b8b42/test/test_ruuvi_endpoint_6.c
+     */
+    @Test
+    public void testDataFormat6GetOk() {
+        byte[] buf = new byte[] { (byte) 0x06, // Data type
+                (byte) 0x17, (byte) 0x0C, // Temperature
+                (byte) 0x56, (byte) 0x68, // Humidity
+                (byte) 0xC7, (byte) 0x9E, // Pressure
+                (byte) 0x00, (byte) 0x70, // PM2.5
+                (byte) 0x00, (byte) 0xC9, // CO2
+                (byte) 0x05, // VOC
+                (byte) 0x01, // NOX
+                (byte) 0xD9, // Luminosity
+                (byte) 0x4A, // Sound avg dBA
+                (byte) 0xCD, // Seq cnt
+                (byte) 0x00, // Flags
+                (byte) 0x4C, (byte) 0x88, (byte) 0x4F // MAC address
+        };
+        RuuviMeasurement m = parser.parse(dataWithCompany(buf));
+        assertEquals((Integer) 6, m.getDataFormat());
+        assertEquals(29.5, m.getTemperature(), 0.01);
+        assertEquals(101102.0, m.getPressure());
+        assertEquals(55.3, m.getHumidity(), 0.01);
+        assertEquals(11.2, m.getPm25(), 0.01);
+        assertEquals((Integer) 201, m.getCo2());
+        assertEquals((Integer) 10, m.getVocIndex());
+        assertEquals((Integer) 2, m.getNoxIndex());
+        assertEquals(13026.6689, m.getLuminosity(), 0.01);
+        // assertEquals(47.6, m.getSoundAverageDbA(), 0.01); // Reserved
+        assertEquals((Integer) 205, m.getMeasurementSequenceNumber());
+        assertFalse(m.isCalibrationInProgress());
+    }
+
+    /**
+     * test_ruuvi_endpoint_6_get_zeroes
+     * Minimum/zero values from
+     * https://github.com/ruuvi/ruuvi.endpoints.c/blob/8183d39ae8d0cd1c284881b10804af9b066b8b42/test/test_ruuvi_endpoint_6.c
+     */
+    @Test
+    public void testDataFormat6GetZeroes() {
+        byte[] buf = new byte[] { (byte) 0x06, // Data type
+                (byte) 0x00, (byte) 0x00, // Temperature
+                (byte) 0x00, (byte) 0x00, // Humidity
+                (byte) 0x00, (byte) 0x00, // Pressure
+                (byte) 0x00, (byte) 0x00, // PM2.5
+                (byte) 0x00, (byte) 0x00, // CO2
+                (byte) 0x00, // VOC
+                (byte) 0x00, // NOX
+                (byte) 0x00, // Luminosity
+                (byte) 0x00, // Sound avg dBA
+                (byte) 0x00, // Seq cnt
+                (byte) 0x00, // Flags
+                (byte) 0x4C, (byte) 0x88, (byte) 0x4F // MAC address
+        };
+        RuuviMeasurement m = parser.parse(dataWithCompany(buf));
+        assertEquals((Integer) 6, m.getDataFormat());
+        assertEquals(0.0, m.getTemperature());
+        assertEquals(50000.0, m.getPressure());
+        assertEquals(0.0, m.getHumidity());
+        assertEquals(0.0, m.getPm25());
+        assertEquals((Integer) 0, m.getCo2());
+        assertEquals((Integer) 0, m.getVocIndex());
+        assertEquals((Integer) 0, m.getNoxIndex());
+        assertEquals(0.0, m.getLuminosity());
+        // assertEquals(18.0, m.getSoundAverageDbA(), 0.01); // Reserved
+        assertEquals((Integer) 0, m.getMeasurementSequenceNumber());
+        assertFalse(m.isCalibrationInProgress());
+    }
+
+    /**
+     * test_ruuvi_endpoint_6_get_temperature
+     * Temperature field test from
+     * https://github.com/ruuvi/ruuvi.endpoints.c/blob/8183d39ae8d0cd1c284881b10804af9b066b8b42/test/test_ruuvi_endpoint_6.c
+     */
+    @Test
+    public void testDataFormat6GetTemperature() {
+        byte[] buf = new byte[] { (byte) 0x06, // Data type
+                (byte) 0x13, (byte) 0x88, // Temperature
+                (byte) 0x00, (byte) 0x00, // Humidity
+                (byte) 0x00, (byte) 0x00, // Pressure
+                (byte) 0x00, (byte) 0x00, // PM2.5
+                (byte) 0x00, (byte) 0x00, // CO2
+                (byte) 0x00, // VOC
+                (byte) 0x00, // NOX
+                (byte) 0x00, // Luminosity
+                (byte) 0x00, // Sound avg dBA
+                (byte) 0x00, // Seq cnt
+                (byte) 0x00, // Flags
+                (byte) 0x4C, (byte) 0x88, (byte) 0x4F // MAC address
+        };
+        RuuviMeasurement m = parser.parse(dataWithCompany(buf));
+        assertEquals((Integer) 6, m.getDataFormat());
+        assertEquals(25.0, m.getTemperature());
+        assertEquals(50000.0, m.getPressure());
+        assertEquals(0.0, m.getHumidity());
+        assertEquals(0.0, m.getPm25());
+        assertEquals((Integer) 0, m.getCo2());
+        assertEquals((Integer) 0, m.getVocIndex());
+        assertEquals((Integer) 0, m.getNoxIndex());
+        assertEquals(0.0, m.getLuminosity());
+        // assertEquals(18.0, m.getSoundAverageDbA(), 0.01); // Reserved
+        assertEquals((Integer) 0, m.getMeasurementSequenceNumber());
+        assertFalse(m.isCalibrationInProgress());
+    }
+
+    /**
+     * test_ruuvi_endpoint_6_get_humidity
+     * Humidity field test from
+     * https://github.com/ruuvi/ruuvi.endpoints.c/blob/8183d39ae8d0cd1c284881b10804af9b066b8b42/test/test_ruuvi_endpoint_6.c
+     */
+    @Test
+    public void testDataFormat6GetHumidity() {
+        byte[] buf = new byte[] { (byte) 0x06, // Data type
+                (byte) 0x00, (byte) 0x00, // Temperature
+                (byte) 0x6D, (byte) 0x60, // Humidity
+                (byte) 0x00, (byte) 0x00, // Pressure
+                (byte) 0x00, (byte) 0x00, // PM2.5
+                (byte) 0x00, (byte) 0x00, // CO2
+                (byte) 0x00, // VOC
+                (byte) 0x00, // NOX
+                (byte) 0x00, // Luminosity
+                (byte) 0x00, // Sound avg dBA
+                (byte) 0x00, // Seq cnt
+                (byte) 0x00, // Flags
+                (byte) 0x4C, (byte) 0x88, (byte) 0x4F // MAC address
+        };
+        RuuviMeasurement m = parser.parse(dataWithCompany(buf));
+        assertEquals((Integer) 6, m.getDataFormat());
+        assertEquals(0.0, m.getTemperature());
+        assertEquals(50000.0, m.getPressure());
+        assertEquals(70.0, m.getHumidity());
+        assertEquals(0.0, m.getPm25());
+        assertEquals((Integer) 0, m.getCo2());
+        assertEquals((Integer) 0, m.getVocIndex());
+        assertEquals((Integer) 0, m.getNoxIndex());
+        assertEquals(0.0, m.getLuminosity());
+        // assertEquals(18.0, m.getSoundAverageDbA(), 0.01); // Reserved
+        assertEquals((Integer) 0, m.getMeasurementSequenceNumber());
+        assertFalse(m.isCalibrationInProgress());
+    }
+
+    /**
+     * test_ruuvi_endpoint_6_get_pressure
+     * Pressure field test from
+     * https://github.com/ruuvi/ruuvi.endpoints.c/blob/8183d39ae8d0cd1c284881b10804af9b066b8b42/test/test_ruuvi_endpoint_6.c
+     */
+    @Test
+    public void testDataFormat6GetPressure() {
+        byte[] buf = new byte[] { (byte) 0x06, // Data type
+                (byte) 0x00, (byte) 0x00, // Temperature
+                (byte) 0x00, (byte) 0x00, // Humidity
+                (byte) 0xC3, (byte) 0x50, // Pressure
+                (byte) 0x00, (byte) 0x00, // PM2.5
+                (byte) 0x00, (byte) 0x00, // CO2
+                (byte) 0x00, // VOC
+                (byte) 0x00, // NOX
+                (byte) 0x00, // Luminosity
+                (byte) 0x00, // Sound avg dBA
+                (byte) 0x00, // Seq cnt
+                (byte) 0x00, // Flags
+                (byte) 0x4C, (byte) 0x88, (byte) 0x4F // MAC address
+        };
+        RuuviMeasurement m = parser.parse(dataWithCompany(buf));
+        assertEquals((Integer) 6, m.getDataFormat());
+        assertEquals(0.0, m.getTemperature());
+        assertEquals(100000.0, m.getPressure());
+        assertEquals(0.0, m.getHumidity());
+        assertEquals(0.0, m.getPm25());
+        assertEquals((Integer) 0, m.getCo2());
+        assertEquals((Integer) 0, m.getVocIndex());
+        assertEquals((Integer) 0, m.getNoxIndex());
+        assertEquals(0.0, m.getLuminosity());
+        // assertEquals(18.0, m.getSoundAverageDbA(), 0.01); // Reserved
+        assertEquals((Integer) 0, m.getMeasurementSequenceNumber());
+        assertFalse(m.isCalibrationInProgress());
+    }
+
+    /**
+     * test_ruuvi_endpoint_6_get_pm2p5
+     * PM2.5 field test from
+     * https://github.com/ruuvi/ruuvi.endpoints.c/blob/8183d39ae8d0cd1c284881b10804af9b066b8b42/test/test_ruuvi_endpoint_6.c
+     */
+    @Test
+    public void testDataFormat6GetPm2p5() {
+        byte[] buf = new byte[] { (byte) 0x06, // Data type
+                (byte) 0x00, (byte) 0x00, // Temperature
+                (byte) 0x00, (byte) 0x00, // Humidity
+                (byte) 0x00, (byte) 0x00, // Pressure
+                (byte) 0x1B, (byte) 0x58, // PM2.5
+                (byte) 0x00, (byte) 0x00, // CO2
+                (byte) 0x00, // VOC
+                (byte) 0x00, // NOX
+                (byte) 0x00, // Luminosity
+                (byte) 0x00, // Sound avg dBA
+                (byte) 0x00, // Seq cnt
+                (byte) 0x00, // Flags
+                (byte) 0x4C, (byte) 0x88, (byte) 0x4F // MAC address
+        };
+        RuuviMeasurement m = parser.parse(dataWithCompany(buf));
+        assertEquals((Integer) 6, m.getDataFormat());
+        assertEquals(0.0, m.getTemperature());
+        assertEquals(50000.0, m.getPressure());
+        assertEquals(0.0, m.getHumidity());
+        assertEquals(700.0, m.getPm25());
+        assertEquals((Integer) 0, m.getCo2());
+        assertEquals((Integer) 0, m.getVocIndex());
+        assertEquals((Integer) 0, m.getNoxIndex());
+        assertEquals(0.0, m.getLuminosity());
+        // assertEquals(18.0, m.getSoundAverageDbA(), 0.01); // Reserved
+        assertEquals((Integer) 0, m.getMeasurementSequenceNumber());
+        assertFalse(m.isCalibrationInProgress());
+    }
+
+    /**
+     * test_ruuvi_endpoint_6_get_co2
+     * CO2 field test from
+     * https://github.com/ruuvi/ruuvi.endpoints.c/blob/8183d39ae8d0cd1c284881b10804af9b066b8b42/test/test_ruuvi_endpoint_6.c
+     */
+    @Test
+    public void testDataFormat6GetCo2() {
+        byte[] buf = new byte[] { (byte) 0x06, // Data type
+                (byte) 0x00, (byte) 0x00, // Temperature
+                (byte) 0x00, (byte) 0x00, // Humidity
+                (byte) 0x00, (byte) 0x00, // Pressure
+                (byte) 0x00, (byte) 0x00, // PM2.5
+                (byte) 0x88, (byte) 0xB8, // CO2
+                (byte) 0x00, // VOC
+                (byte) 0x00, // NOX
+                (byte) 0x00, // Luminosity
+                (byte) 0x00, // Sound avg dBA
+                (byte) 0x00, // Seq cnt
+                (byte) 0x00, // Flags
+                (byte) 0x4C, (byte) 0x88, (byte) 0x4F // MAC address
+        };
+        RuuviMeasurement m = parser.parse(dataWithCompany(buf));
+        assertEquals((Integer) 6, m.getDataFormat());
+        assertEquals(0.0, m.getTemperature());
+        assertEquals(50000.0, m.getPressure());
+        assertEquals(0.0, m.getHumidity());
+        assertEquals(0.0, m.getPm25());
+        assertEquals((Integer) 35000, m.getCo2());
+        assertEquals((Integer) 0, m.getVocIndex());
+        assertEquals((Integer) 0, m.getNoxIndex());
+        assertEquals(0.0, m.getLuminosity());
+        // assertEquals(18.0, m.getSoundAverageDbA(), 0.01); // Reserved
+        assertEquals((Integer) 0, m.getMeasurementSequenceNumber());
+        assertFalse(m.isCalibrationInProgress());
+    }
+
+    /**
+     * test_ruuvi_endpoint_6_get_voc
+     * VOC field test from
+     * https://github.com/ruuvi/ruuvi.endpoints.c/blob/8183d39ae8d0cd1c284881b10804af9b066b8b42/test/test_ruuvi_endpoint_6.c
+     */
+    @Test
+    public void testDataFormat6GetVoc() {
+        byte[] buf = new byte[] { (byte) 0x06, // Data type
+                (byte) 0x00, (byte) 0x00, // Temperature
+                (byte) 0x00, (byte) 0x00, // Humidity
+                (byte) 0x00, (byte) 0x00, // Pressure
+                (byte) 0x00, (byte) 0x00, // PM2.5
+                (byte) 0x00, (byte) 0x00, // CO2
+                (byte) 0xF9, // VOC
+                (byte) 0x00, // NOX
+                (byte) 0x00, // Luminosity
+                (byte) 0x00, // Sound avg dBA
+                (byte) 0x00, // Seq cnt
+                (byte) 0x40, // Flags
+                (byte) 0x4C, (byte) 0x88, (byte) 0x4F // MAC address
+        };
+        RuuviMeasurement m = parser.parse(dataWithCompany(buf));
+        assertEquals((Integer) 6, m.getDataFormat());
+        assertEquals(0.0, m.getTemperature());
+        assertEquals(50000.0, m.getPressure());
+        assertEquals(0.0, m.getHumidity());
+        assertEquals(0.0, m.getPm25());
+        assertEquals((Integer) 0, m.getCo2());
+        assertEquals((Integer) 499, m.getVocIndex());
+        assertEquals((Integer) 0, m.getNoxIndex());
+        assertEquals(0.0, m.getLuminosity());
+        // assertEquals(18.0, m.getSoundAverageDbA(), 0.01); // Reserved
+        assertEquals((Integer) 0, m.getMeasurementSequenceNumber());
+        assertFalse(m.isCalibrationInProgress());
+    }
+
+    /**
+     * test_ruuvi_endpoint_6_get_nox
+     * NOX field test from
+     * https://github.com/ruuvi/ruuvi.endpoints.c/blob/8183d39ae8d0cd1c284881b10804af9b066b8b42/test/test_ruuvi_endpoint_6.c
+     */
+    @Test
+    public void testDataFormat6GetNox() {
+        byte[] buf = new byte[] { (byte) 0x06, // Data type
+                (byte) 0x00, (byte) 0x00, // Temperature
+                (byte) 0x00, (byte) 0x00, // Humidity
+                (byte) 0x00, (byte) 0x00, // Pressure
+                (byte) 0x00, (byte) 0x00, // PM2.5
+                (byte) 0x00, (byte) 0x00, // CO2
+                (byte) 0x00, // VOC
+                (byte) 0xF8, // NOX
+                (byte) 0x00, // Luminosity
+                (byte) 0x00, // Sound avg dBA
+                (byte) 0x00, // Seq cnt
+                (byte) 0x80, // Flags
+                (byte) 0x4C, (byte) 0x88, (byte) 0x4F // MAC address
+        };
+        RuuviMeasurement m = parser.parse(dataWithCompany(buf));
+        assertEquals((Integer) 6, m.getDataFormat());
+        assertEquals(0.0, m.getTemperature());
+        assertEquals(50000.0, m.getPressure());
+        assertEquals(0.0, m.getHumidity());
+        assertEquals(0.0, m.getPm25());
+        assertEquals((Integer) 0, m.getCo2());
+        assertEquals((Integer) 0, m.getVocIndex());
+        assertEquals((Integer) 497, m.getNoxIndex());
+        assertEquals(0.0, m.getLuminosity());
+        // assertEquals(18.0, m.getSoundAverageDbA(), 0.01); // Reserved
+        assertEquals((Integer) 0, m.getMeasurementSequenceNumber());
+        assertFalse(m.isCalibrationInProgress());
+    }
+
+    /**
+     * test_ruuvi_endpoint_6_get_luminosity
+     * Luminosity field test from
+     * https://github.com/ruuvi/ruuvi.endpoints.c/blob/8183d39ae8d0cd1c284881b10804af9b066b8b42/test/test_ruuvi_endpoint_6.c
+     */
+    @Test
+    public void testDataFormat6GetLuminosity() {
+        byte[] buf = new byte[] { (byte) 0x06, // Data type
+                (byte) 0x00, (byte) 0x00, // Temperature
+                (byte) 0x00, (byte) 0x00, // Humidity
+                (byte) 0x00, (byte) 0x00, // Pressure
+                (byte) 0x00, (byte) 0x00, // PM2.5
+                (byte) 0x00, (byte) 0x00, // CO2
+                (byte) 0x00, // VOC
+                (byte) 0x00, // NOX
+                (byte) 0xFD, // Luminosity
+                (byte) 0x00, // Sound avg dBA
+                (byte) 0x00, // Seq cnt
+                (byte) 0x00, // Flags
+                (byte) 0x4C, (byte) 0x88, (byte) 0x4F // MAC address
+        };
+        RuuviMeasurement m = parser.parse(dataWithCompany(buf));
+        assertEquals((Integer) 6, m.getDataFormat());
+        assertEquals(0.0, m.getTemperature());
+        assertEquals(50000.0, m.getPressure());
+        assertEquals(0.0, m.getHumidity());
+        assertEquals(0.0, m.getPm25());
+        assertEquals((Integer) 0, m.getCo2());
+        assertEquals((Integer) 0, m.getVocIndex());
+        assertEquals((Integer) 0, m.getNoxIndex());
+        assertEquals(62735.0846876, m.getLuminosity(), 0.01);
+        // assertEquals(18.0, m.getSoundAverageDbA(), 0.01); // Reserved
+        assertEquals((Integer) 0, m.getMeasurementSequenceNumber());
+        assertFalse(m.isCalibrationInProgress());
+    }
+
+    /**
+     * test_ruuvi_endpoint_6_get_seq_cnt
+     * Sequence counter field test from
+     * https://github.com/ruuvi/ruuvi.endpoints.c/blob/8183d39ae8d0cd1c284881b10804af9b066b8b42/test/test_ruuvi_endpoint_6.c
+     */
+    @Test
+    public void testDataFormat6GetSeqCnt() {
+        byte[] buf = new byte[] { (byte) 0x06, // Data type
+                (byte) 0x00, (byte) 0x00, // Temperature
+                (byte) 0x00, (byte) 0x00, // Humidity
+                (byte) 0x00, (byte) 0x00, // Pressure
+                (byte) 0x00, (byte) 0x00, // PM2.5
+                (byte) 0x00, (byte) 0x00, // CO2
+                (byte) 0x00, // VOC
+                (byte) 0x00, // NOX
+                (byte) 0x00, // Luminosity
+                (byte) 0x00, // Sound avg dBA
+                (byte) 0xFA, // Seq cnt
+                (byte) 0x00, // Flags
+                (byte) 0x4C, (byte) 0x88, (byte) 0x4F // MAC address
+        };
+        RuuviMeasurement m = parser.parse(dataWithCompany(buf));
+        assertEquals((Integer) 6, m.getDataFormat());
+        assertEquals(0.0, m.getTemperature());
+        assertEquals(50000.0, m.getPressure());
+        assertEquals(0.0, m.getHumidity());
+        assertEquals(0.0, m.getPm25());
+        assertEquals((Integer) 0, m.getCo2());
+        assertEquals((Integer) 0, m.getVocIndex());
+        assertEquals((Integer) 0, m.getNoxIndex());
+        assertEquals(0.0, m.getLuminosity());
+        // assertEquals(18.0, m.getSoundAverageDbA(), 0.01); // Reserved
+        assertEquals((Integer) 250, m.getMeasurementSequenceNumber());
+        assertFalse(m.isCalibrationInProgress());
+    }
+
+    /**
+     * test_ruuvi_endpoint_6_get_ok_max
+     * Maximum values test from
+     * https://github.com/ruuvi/ruuvi.endpoints.c/blob/8183d39ae8d0cd1c284881b10804af9b066b8b42/test/test_ruuvi_endpoint_6.c
+     */
+    @Test
+    public void testDataFormat6GetOkMax() {
+        byte[] buf = new byte[] { (byte) 0x06, // Data type
+                (byte) 0x7F, (byte) 0xFF, // Temperature
+                (byte) 0x9C, (byte) 0x40, // Humidity
+                (byte) 0xFF, (byte) 0xFE, // Pressure
+                (byte) 0x27, (byte) 0x10, // PM2.5
+                (byte) 0x9C, (byte) 0x40, // CO2
+                (byte) 0xFA, // VOC
+                (byte) 0xFA, // NOX
+                (byte) 0xFE, // Luminosity
+                (byte) 0xFF, // Sound avg dBA
+                (byte) 0xFF, // Seq cnt
+                (byte) 0x07, // Flags
+                (byte) 0xFF, (byte) 0xFF, (byte) 0xFF // MAC address
+        };
+        RuuviMeasurement m = parser.parse(dataWithCompany(buf));
+        assertEquals((Integer) 6, m.getDataFormat());
+        assertEquals(163.835, m.getTemperature(), 0.001);
+        assertEquals(115534.0, m.getPressure());
+        assertEquals(100.0, m.getHumidity());
+        assertEquals(1000.0, m.getPm25());
+        assertEquals((Integer) 40000, m.getCo2());
+        assertEquals((Integer) 500, m.getVocIndex());
+        assertEquals((Integer) 500, m.getNoxIndex());
+        assertEquals(65534.99999, m.getLuminosity(), 0.01);
+        // assertEquals(120.0, m.getSoundAverageDbA(), 0.01); // Reserved
+        assertEquals((Integer) 255, m.getMeasurementSequenceNumber());
+        assertTrue(m.isCalibrationInProgress());
+    }
+
+    /**
+     * test_ruuvi_endpoint_6_get_ok_min
+     * Minimum values test from
+     * https://github.com/ruuvi/ruuvi.endpoints.c/blob/8183d39ae8d0cd1c284881b10804af9b066b8b42/test/test_ruuvi_endpoint_6.c
+     */
+    @Test
+    public void testDataFormat6GetOkMin() {
+        byte[] buf = new byte[] { (byte) 0x06, // Data type
+                (byte) 0x80, (byte) 0x01, // Temperature
+                (byte) 0x00, (byte) 0x00, // Humidity
+                (byte) 0x00, (byte) 0x00, // Pressure
+                (byte) 0x00, (byte) 0x00, // PM2.5
+                (byte) 0x00, (byte) 0x00, // CO2
+                (byte) 0x00, // VOC
+                (byte) 0x00, // NOX
+                (byte) 0x00, // Luminosity
+                (byte) 0x00, // Sound avg dBA
+                (byte) 0x00, // Seq cnt
+                (byte) 0x00, // Flags
+                (byte) 0x00, (byte) 0x00, (byte) 0x00 // MAC address
+        };
+        RuuviMeasurement m = parser.parse(dataWithCompany(buf));
+        assertEquals((Integer) 6, m.getDataFormat());
+        assertEquals(-163.835, m.getTemperature(), 0.001);
+        assertEquals(50000.0, m.getPressure());
+        assertEquals(0.0, m.getHumidity());
+        assertEquals(0.0, m.getPm25());
+        assertEquals((Integer) 0, m.getCo2());
+        assertEquals((Integer) 0, m.getVocIndex());
+        assertEquals((Integer) 0, m.getNoxIndex());
+        assertEquals(0.0, m.getLuminosity());
+        // assertEquals(18.0, m.getSoundAverageDbA(), 0.01); // Reserved
+        assertEquals((Integer) 0, m.getMeasurementSequenceNumber());
+        assertFalse(m.isCalibrationInProgress());
+    }
 }
