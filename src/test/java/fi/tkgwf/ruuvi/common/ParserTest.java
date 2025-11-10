@@ -436,7 +436,7 @@ public class ParserTest extends TestCase {
         assertEquals((Integer) 4, m.getNoxIndex());
         assertEquals(13_027, m.getLuminosity(), 0.01);
         assertEquals((Integer) 14_601_710, m.getMeasurementSequenceNumber());
-        assertTrue(m.isCalibrationInProgress());
+        assertFalse(m.isCalibrationInProgress());
         assertNull(m.getBatteryVoltage());
         assertNull(m.getAccelerationX());
     }
