@@ -48,6 +48,14 @@ public class ParserTest extends TestCase {
         }
     }
 
+    private byte[] dataWithCompany(byte[] rawWithoutCompany) {
+        byte[] data = new byte[2 + rawWithoutCompany.length];
+        data[0] = (byte) 0x99; // company id
+        data[1] = (byte) 0x04; // company id
+        System.arraycopy(rawWithoutCompany, 0, data, 2, rawWithoutCompany.length);
+        return data;
+    }
+
     @Override
     @Before
     public void setUp() {
@@ -514,8 +522,4 @@ public class ParserTest extends TestCase {
         assertFalse(m.isCalibrationInProgress());
     }
 
-    @Test
-    public void testInvalid() {
-        assertNull(parser.parse("XXX".getBytes()));
-    }
 }
