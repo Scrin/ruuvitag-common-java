@@ -452,17 +452,17 @@ public class ParserTest extends TestCase {
         assertEquals((Integer) 0xE1, m.getDataFormat());
         assertEquals(163.835, m.getTemperature());
         assertEquals(115534.0, m.getPressure());
-        assertEquals(163.8350, m.getHumidity());
-        assertEquals(6553.4, m.getPm1());
-        assertEquals(6553.4, m.getPm25());
-        assertEquals(6553.4, m.getPm4());
-        assertEquals(6553.4, m.getPm10());
-        assertEquals((Integer) 65535, m.getCo2());
-        assertEquals((Integer) 511, m.getVocIndex());
-        assertEquals((Integer) 511, m.getNoxIndex());
-        assertEquals(655350.0, m.getLuminosity(), 0.01);
-        assertEquals((Integer) 16777215, m.getMeasurementSequenceNumber());
-        assertFalse(m.isCalibrationInProgress());
+        assertEquals(100.0, m.getHumidity());
+        assertEquals(1000.0, m.getPm1());
+        assertEquals(1000.0, m.getPm25());
+        assertEquals(1000.0, m.getPm4());
+        assertEquals(1000.0, m.getPm10());
+        assertEquals((Integer) 40000, m.getCo2());
+        assertEquals((Integer) 500, m.getVocIndex());
+        assertEquals((Integer) 500, m.getNoxIndex());
+        assertEquals(144284.0, m.getLuminosity(), 0.01);
+        assertEquals((Integer) 16_777_214, m.getMeasurementSequenceNumber());
+        assertTrue(m.isCalibrationInProgress());
     }
 
     /**
