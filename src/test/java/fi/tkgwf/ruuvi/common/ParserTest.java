@@ -417,9 +417,9 @@ public class ParserTest extends TestCase {
         assertEquals((Integer) 10, m.getVocIndex());
         assertEquals((Integer) 2, m.getNoxIndex());
         assertEquals(13027, m.getLuminosity(), 0.01);
-        // assertEquals(42.4, m.getSoundInstantDbA(), 0.01);
-        // assertEquals(47.6, m.getSoundAverageDbA(), 0.01);
-        // assertEquals(80.4, m.getSoundPeakSplDb(), 0.01);
+        // assertEquals(42.4, m.getSoundInstantDbA(), 0.01); // Reserved
+        // assertEquals(47.6, m.getSoundAverageDbA(), 0.01); // Reserved
+        // assertEquals(80.4, m.getSoundPeakSplDb(), 0.01); // Reserved
         assertEquals((Integer) 0xDECDEE, m.getMeasurementSequenceNumber());
         assertFalse(m.isCalibrationInProgress());
     }
@@ -464,9 +464,9 @@ public class ParserTest extends TestCase {
         assertEquals((Integer) 0, m.getVocIndex());
         assertEquals((Integer) 0, m.getNoxIndex());
         assertEquals(0.0, m.getLuminosity());
-        // assertEquals(18.0, m.getSoundInstantDbA(), 0.01);
-        // assertEquals(18.0, m.getSoundAverageDbA(), 0.01);
-        // assertEquals(18.0, m.getSoundPeakSplDb(), 0.01);
+        // assertEquals(18.0, m.getSoundInstantDbA(), 0.01); // Reserved
+        // assertEquals(18.0, m.getSoundAverageDbA(), 0.01); // Reserved
+        // assertEquals(18.0, m.getSoundPeakSplDb(), 0.01); // Reserved
         assertEquals((Integer) 0x000000, m.getMeasurementSequenceNumber());
         assertFalse(m.isCalibrationInProgress());
     }
@@ -511,9 +511,9 @@ public class ParserTest extends TestCase {
         assertEquals((Integer) 0, m.getVocIndex());
         assertEquals((Integer) 0, m.getNoxIndex());
         assertEquals(0.0, m.getLuminosity());
-        // assertEquals(18.0, m.getSoundInstantDbA(), 0.01);
-        // assertEquals(18.0, m.getSoundAverageDbA(), 0.01);
-        // assertEquals(18.0, m.getSoundPeakSplDb(), 0.01);
+        // assertEquals(18.0, m.getSoundInstantDbA(), 0.01); // Reserved
+        // assertEquals(18.0, m.getSoundAverageDbA(), 0.01); // Reserved
+        // assertEquals(18.0, m.getSoundPeakSplDb(), 0.01); // Reserved
         assertEquals((Integer) 0x000000, m.getMeasurementSequenceNumber());
         assertFalse(m.isCalibrationInProgress());
     }
@@ -558,9 +558,9 @@ public class ParserTest extends TestCase {
         assertEquals((Integer) 0, m.getVocIndex());
         assertEquals((Integer) 0, m.getNoxIndex());
         assertEquals(0.0, m.getLuminosity());
-        // assertEquals(18.0, m.getSoundInstantDbA(), 0.01);
-        // assertEquals(18.0, m.getSoundAverageDbA(), 0.01);
-        // assertEquals(18.0, m.getSoundPeakSplDb(), 0.01);
+        // assertEquals(18.0, m.getSoundInstantDbA(), 0.01); // Reserved
+        // assertEquals(18.0, m.getSoundAverageDbA(), 0.01); // Reserved
+        // assertEquals(18.0, m.getSoundPeakSplDb(), 0.01); // Reserved
         assertEquals((Integer) 0x000000, m.getMeasurementSequenceNumber());
         assertFalse(m.isCalibrationInProgress());
     }
@@ -605,9 +605,9 @@ public class ParserTest extends TestCase {
         assertEquals((Integer) 0, m.getVocIndex());
         assertEquals((Integer) 0, m.getNoxIndex());
         assertEquals(0.0, m.getLuminosity());
-        // assertEquals(18.0, m.getSoundInstantDbA(), 0.01);
-        // assertEquals(18.0, m.getSoundAverageDbA(), 0.01);
-        // assertEquals(18.0, m.getSoundPeakSplDb(), 0.01);
+        // assertEquals(18.0, m.getSoundInstantDbA(), 0.01); // Reserved
+        // assertEquals(18.0, m.getSoundAverageDbA(), 0.01); // Reserved
+        // assertEquals(18.0, m.getSoundPeakSplDb(), 0.01); // Reserved
         assertEquals((Integer) 0x000000, m.getMeasurementSequenceNumber());
         assertFalse(m.isCalibrationInProgress());
     }
@@ -652,9 +652,9 @@ public class ParserTest extends TestCase {
         assertEquals((Integer) 0, m.getVocIndex());
         assertEquals((Integer) 0, m.getNoxIndex());
         assertEquals(0.0, m.getLuminosity());
-        // assertEquals(18.0, m.getSoundInstantDbA(), 0.01);
-        // assertEquals(18.0, m.getSoundAverageDbA(), 0.01);
-        // assertEquals(18.0, m.getSoundPeakSplDb(), 0.01);
+        // assertEquals(18.0, m.getSoundInstantDbA(), 0.01); // Reserved
+        // assertEquals(18.0, m.getSoundAverageDbA(), 0.01); // Reserved
+        // assertEquals(18.0, m.getSoundPeakSplDb(), 0.01); // Reserved
         assertEquals((Integer) 0x000000, m.getMeasurementSequenceNumber());
         assertFalse(m.isCalibrationInProgress());
     }
@@ -699,9 +699,9 @@ public class ParserTest extends TestCase {
         assertEquals((Integer) 0, m.getVocIndex());
         assertEquals((Integer) 0, m.getNoxIndex());
         assertEquals(0.0, m.getLuminosity());
-        // assertEquals(18.0, m.getSoundInstantDbA(), 0.01);
-        // assertEquals(18.0, m.getSoundAverageDbA(), 0.01);
-        // assertEquals(18.0, m.getSoundPeakSplDb(), 0.01);
+        // assertEquals(18.0, m.getSoundInstantDbA(), 0.01); // Reserved
+        // assertEquals(18.0, m.getSoundAverageDbA(), 0.01); // Reserved
+        // assertEquals(18.0, m.getSoundPeakSplDb(), 0.01); // Reserved
         assertEquals((Integer) 0x000000, m.getMeasurementSequenceNumber());
         assertFalse(m.isCalibrationInProgress());
     }
@@ -746,9 +746,9 @@ public class ParserTest extends TestCase {
         assertEquals((Integer) 0, m.getVocIndex());
         assertEquals((Integer) 0, m.getNoxIndex());
         assertEquals(0.0, m.getLuminosity());
-        // assertEquals(18.0, m.getSoundInstantDbA(), 0.01);
-        // assertEquals(18.0, m.getSoundAverageDbA(), 0.01);
-        // assertEquals(18.0, m.getSoundPeakSplDb(), 0.01);
+        // assertEquals(18.0, m.getSoundInstantDbA(), 0.01); // Reserved
+        // assertEquals(18.0, m.getSoundAverageDbA(), 0.01); // Reserved
+        // assertEquals(18.0, m.getSoundPeakSplDb(), 0.01); // Reserved
         assertEquals((Integer) 0x000000, m.getMeasurementSequenceNumber());
         assertFalse(m.isCalibrationInProgress());
     }
@@ -793,9 +793,9 @@ public class ParserTest extends TestCase {
         assertEquals((Integer) 0, m.getVocIndex());
         assertEquals((Integer) 0, m.getNoxIndex());
         assertEquals(0.0, m.getLuminosity());
-        // assertEquals(18.0, m.getSoundInstantDbA(), 0.01);
-        // assertEquals(18.0, m.getSoundAverageDbA(), 0.01);
-        // assertEquals(18.0, m.getSoundPeakSplDb(), 0.01);
+        // assertEquals(18.0, m.getSoundInstantDbA(), 0.01); // Reserved
+        // assertEquals(18.0, m.getSoundAverageDbA(), 0.01); // Reserved
+        // assertEquals(18.0, m.getSoundPeakSplDb(), 0.01); // Reserved
         assertEquals((Integer) 0x000000, m.getMeasurementSequenceNumber());
         assertFalse(m.isCalibrationInProgress());
     }
@@ -840,9 +840,9 @@ public class ParserTest extends TestCase {
         assertEquals((Integer) 0, m.getVocIndex());
         assertEquals((Integer) 0, m.getNoxIndex());
         assertEquals(0.0, m.getLuminosity());
-        // assertEquals(18.0, m.getSoundInstantDbA(), 0.01);
-        // assertEquals(18.0, m.getSoundAverageDbA(), 0.01);
-        // assertEquals(18.0, m.getSoundPeakSplDb(), 0.01);
+        // assertEquals(18.0, m.getSoundInstantDbA(), 0.01); // Reserved
+        // assertEquals(18.0, m.getSoundAverageDbA(), 0.01); // Reserved
+        // assertEquals(18.0, m.getSoundPeakSplDb(), 0.01); // Reserved
         assertEquals((Integer) 0x000000, m.getMeasurementSequenceNumber());
         assertFalse(m.isCalibrationInProgress());
     }
@@ -887,9 +887,9 @@ public class ParserTest extends TestCase {
         assertEquals((Integer) 499, m.getVocIndex());
         assertEquals((Integer) 0, m.getNoxIndex());
         assertEquals(0.0, m.getLuminosity());
-        // assertEquals(18.0, m.getSoundInstantDbA(), 0.01);
-        // assertEquals(18.0, m.getSoundAverageDbA(), 0.01);
-        // assertEquals(18.0, m.getSoundPeakSplDb(), 0.01);
+        // assertEquals(18.0, m.getSoundInstantDbA(), 0.01); // Reserved
+        // assertEquals(18.0, m.getSoundAverageDbA(), 0.01); // Reserved
+        // assertEquals(18.0, m.getSoundPeakSplDb(), 0.01); // Reserved
         assertEquals((Integer) 0x000000, m.getMeasurementSequenceNumber());
         assertFalse(m.isCalibrationInProgress());
     }
@@ -934,9 +934,9 @@ public class ParserTest extends TestCase {
         assertEquals((Integer) 0, m.getVocIndex());
         assertEquals((Integer) 497, m.getNoxIndex());
         assertEquals(0.0, m.getLuminosity());
-        // assertEquals(18.0, m.getSoundInstantDbA(), 0.01);
-        // assertEquals(18.0, m.getSoundAverageDbA(), 0.01);
-        // assertEquals(18.0, m.getSoundPeakSplDb(), 0.01);
+        // assertEquals(18.0, m.getSoundInstantDbA(), 0.01); // Reserved
+        // assertEquals(18.0, m.getSoundAverageDbA(), 0.01); // Reserved
+        // assertEquals(18.0, m.getSoundPeakSplDb(), 0.01); // Reserved
         assertEquals((Integer) 0x000000, m.getMeasurementSequenceNumber());
         assertFalse(m.isCalibrationInProgress());
     }
@@ -981,9 +981,9 @@ public class ParserTest extends TestCase {
         assertEquals((Integer) 0, m.getVocIndex());
         assertEquals((Integer) 0, m.getNoxIndex());
         assertEquals(144000.02, m.getLuminosity(), 0.01);
-        // assertEquals(18.0, m.getSoundInstantDbA(), 0.01);
-        // assertEquals(18.0, m.getSoundAverageDbA(), 0.01);
-        // assertEquals(18.0, m.getSoundPeakSplDb(), 0.01);
+        // assertEquals(18.0, m.getSoundInstantDbA(), 0.01); // Reserved
+        // assertEquals(18.0, m.getSoundAverageDbA(), 0.01); // Reserved
+        // assertEquals(18.0, m.getSoundPeakSplDb(), 0.01); // Reserved
         assertEquals((Integer) 0x000000, m.getMeasurementSequenceNumber());
         assertFalse(m.isCalibrationInProgress());
     }
@@ -1018,9 +1018,9 @@ public class ParserTest extends TestCase {
     // };
     // RuuviMeasurement m = parser.parse(dataWithCompany(buf));
     // assertEquals((Integer) 0xE1, m.getDataFormat());
-    // assertEquals(101.0, m.getSoundInstantDbA(), 0.01);
-    // assertEquals(18.0, m.getSoundAverageDbA(), 0.01);
-    // assertEquals(18.0, m.getSoundPeakSplDb(), 0.01);
+    // assertEquals(101.0, m.getSoundInstantDbA(), 0.01); // Reserved
+    // assertEquals(18.0, m.getSoundAverageDbA(), 0.01); // Reserved
+    // assertEquals(18.0, m.getSoundPeakSplDb(), 0.01); // Reserved
     // }
 
     // /**
@@ -1053,9 +1053,9 @@ public class ParserTest extends TestCase {
     // };
     // RuuviMeasurement m = parser.parse(dataWithCompany(buf));
     // assertEquals((Integer) 0xE1, m.getDataFormat());
-    // assertEquals(18.0, m.getSoundInstantDbA(), 0.01);
-    // assertEquals(101.0, m.getSoundAverageDbA(), 0.01);
-    // assertEquals(18.0, m.getSoundPeakSplDb(), 0.01);
+    // assertEquals(18.0, m.getSoundInstantDbA(), 0.01); // Reserved
+    // assertEquals(101.0, m.getSoundAverageDbA(), 0.01); // Reserved
+    // assertEquals(18.0, m.getSoundPeakSplDb(), 0.01); // Reserved
     // }
 
     // /**
@@ -1088,9 +1088,9 @@ public class ParserTest extends TestCase {
     // };
     // RuuviMeasurement m = parser.parse(dataWithCompany(buf));
     // assertEquals((Integer) 0xE1, m.getDataFormat());
-    // assertEquals(18.0, m.getSoundInstantDbA(), 0.01);
-    // assertEquals(18.0, m.getSoundAverageDbA(), 0.01);
-    // assertEquals(101.0, m.getSoundPeakSplDb(), 0.01);
+    // assertEquals(18.0, m.getSoundInstantDbA(), 0.01); // Reserved
+    // assertEquals(18.0, m.getSoundAverageDbA(), 0.01); // Reserved
+    // assertEquals(101.0, m.getSoundPeakSplDb(), 0.01); // Reserved
     // }
 
     /**
@@ -1133,9 +1133,9 @@ public class ParserTest extends TestCase {
         assertEquals((Integer) 0, m.getVocIndex());
         assertEquals((Integer) 0, m.getNoxIndex());
         assertEquals(0.0, m.getLuminosity());
-        // assertEquals(18.0, m.getSoundInstantDbA(), 0.01);
-        // assertEquals(18.0, m.getSoundAverageDbA(), 0.01);
-        // assertEquals(18.0, m.getSoundPeakSplDb(), 0.01);
+        // assertEquals(18.0, m.getSoundInstantDbA(), 0.01); // Reserved
+        // assertEquals(18.0, m.getSoundAverageDbA(), 0.01); // Reserved
+        // assertEquals(18.0, m.getSoundPeakSplDb(), 0.01); // Reserved
         assertEquals((Integer) 0xABCDEF, m.getMeasurementSequenceNumber());
         assertFalse(m.isCalibrationInProgress());
     }
@@ -1278,9 +1278,9 @@ public class ParserTest extends TestCase {
         assertEquals((Integer) 500, m.getVocIndex());
         assertEquals((Integer) 500, m.getNoxIndex());
         assertEquals(144284.0, m.getLuminosity(), 0.01);
-        // assertEquals(120.0, m.getSoundInstantDbA(), 0.01);
-        // assertEquals(120.0, m.getSoundAverageDbA(), 0.01);
-        // assertEquals(120.0, m.getSoundPeakSplDb(), 0.01);
+        // assertEquals(120.0, m.getSoundInstantDbA(), 0.01); // Reserved
+        // assertEquals(120.0, m.getSoundAverageDbA(), 0.01); // Reserved
+        // assertEquals(120.0, m.getSoundPeakSplDb(), 0.01); // Reserved
         assertTrue(m.isCalibrationInProgress());
         // assertTrue(m.isButtonPressed());
         // assertTrue(m.isRtcRunningOnBoot());
@@ -1326,9 +1326,9 @@ public class ParserTest extends TestCase {
         assertEquals((Integer) 0, m.getVocIndex());
         assertEquals((Integer) 0, m.getNoxIndex());
         assertEquals(0.0, m.getLuminosity());
-        // assertEquals(18.0, m.getSoundInstantDbA(), 0.01);
-        // assertEquals(18.0, m.getSoundAverageDbA(), 0.01);
-        // assertEquals(18.0, m.getSoundPeakSplDb(), 0.01);
+        // assertEquals(18.0, m.getSoundInstantDbA(), 0.01); // Reserved
+        // assertEquals(18.0, m.getSoundAverageDbA(), 0.01); // Reserved
+        // assertEquals(18.0, m.getSoundPeakSplDb(), 0.01); // Reserved
         assertFalse(m.isCalibrationInProgress());
         // assertFalse(m.isButtonPressed());
         // assertFalse(m.isRtcRunningOnBoot());
