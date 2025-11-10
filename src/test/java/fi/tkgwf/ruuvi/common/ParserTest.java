@@ -423,81 +423,6 @@ public class ParserTest extends TestCase {
     }
 
     /**
-     * "Valid data" test vector for Data Format E1
-     * https://docs.ruuvi.com/communication/bluetooth-advertisements/data-format-e1
-     */
-    @Test
-    public void testDataFormatE1TestVectorValid() {
-        // Format E1 test vector with valid measurements (40 bytes of E1 data)
-        RuuviMeasurement m = parser.parse(dataWithCompany(
-                "E1170C5668C79E0065007004BD11CA00C90A0213E0ACXXXXXXDECDEE10XXXXXXXXXXCBB8334C884F".replace('X', '0')));
-        assertEquals((Integer) 0xE1, m.getDataFormat());
-        assertEquals(29.5, m.getTemperature());
-        assertEquals(101102.0, m.getPressure());
-        assertEquals(55.3, m.getHumidity());
-        assertEquals(10.1, m.getPm1());
-        assertEquals(11.2, m.getPm25());
-        assertEquals(121.3, m.getPm4());
-        assertEquals(455.4, m.getPm10());
-        assertEquals((Integer) 201, m.getCo2());
-        assertEquals((Integer) 20, m.getVocIndex());
-        assertEquals((Integer) 4, m.getNoxIndex());
-        assertEquals(13_027, m.getLuminosity(), 0.01);
-        assertEquals((Integer) 14_601_710, m.getMeasurementSequenceNumber());
-        assertFalse(m.isCalibrationInProgress());
-        assertNull(m.getBatteryVoltage());
-        assertNull(m.getAccelerationX());
-    }
-
-    /**
-     * "Maximum values" test vector for Data Format E1
-     */
-    @Test
-    public void testDataFormatE1TestVectorMaxValues() {
-        // Format E1 with maximum valid values (40 bytes)
-        RuuviMeasurement m = parser.parse(dataWithCompany(
-                "E17FFF9C40FFFE27102710271027109C40FAFADC28F0XXXXXXFFFFFE3FXXXXXXXXXXCBB8334C884F".replace('X', '0')));
-        assertEquals((Integer) 0xE1, m.getDataFormat());
-        assertEquals(163.835, m.getTemperature());
-        assertEquals(115534.0, m.getPressure());
-        assertEquals(100.0, m.getHumidity());
-        assertEquals(1000.0, m.getPm1());
-        assertEquals(1000.0, m.getPm25());
-        assertEquals(1000.0, m.getPm4());
-        assertEquals(1000.0, m.getPm10());
-        assertEquals((Integer) 40000, m.getCo2());
-        assertEquals((Integer) 500, m.getVocIndex());
-        assertEquals((Integer) 500, m.getNoxIndex());
-        assertEquals(144284.0, m.getLuminosity(), 0.01);
-        assertEquals((Integer) 16_777_214, m.getMeasurementSequenceNumber());
-        assertTrue(m.isCalibrationInProgress());
-    }
-
-    /**
-     * "Minimum values" test vector for Data Format E1
-     */
-    @Test
-    public void testDataFormatE1TestVectorMinValues() {
-        // Format E1 with minimum valid values (40 bytes)
-        RuuviMeasurement m = parser.parse(dataWithCompany(
-                "E1800100000000000000000000000000000000000000XXXXXX0000000XXXXXXXXXXXCBB8334C884F".replace('X', '0')));
-        assertEquals((Integer) 0xE1, m.getDataFormat());
-        assertEquals(-163.835, m.getTemperature());
-        assertEquals(50000.0, m.getPressure());
-        assertEquals(0.0, m.getHumidity());
-        assertEquals(0.0, m.getPm1());
-        assertEquals(0.0, m.getPm25());
-        assertEquals(0.0, m.getPm4());
-        assertEquals(0.0, m.getPm10());
-        assertEquals((Integer) 0, m.getCo2());
-        assertEquals((Integer) 0, m.getVocIndex());
-        assertEquals((Integer) 0, m.getNoxIndex());
-        assertEquals(0.0, m.getLuminosity(), 0.01);
-        assertEquals((Integer) 0, m.getMeasurementSequenceNumber());
-        assertFalse(m.isCalibrationInProgress());
-    }
-
-    /**
      * "Invalid values" test vector for Data Format E1
      * Tests handling of sentinel values (0xFFFF for unsigned shorts, 0x8000 for signed short)
      */
@@ -565,6 +490,7 @@ public class ParserTest extends TestCase {
         // assertEquals(42.4, m.getSoundInstantDbA(), 0.01);
         // assertEquals(47.6, m.getSoundAverageDbA(), 0.01);
         // assertEquals(80.4, m.getSoundPeakSplDb(), 0.01);
+        assertEquals((Integer) 0xDECDEE, m.getMeasurementSequenceNumber());
         assertFalse(m.isCalibrationInProgress());
     }
 
@@ -611,6 +537,7 @@ public class ParserTest extends TestCase {
         // assertEquals(18.0, m.getSoundInstantDbA(), 0.01);
         // assertEquals(18.0, m.getSoundAverageDbA(), 0.01);
         // assertEquals(18.0, m.getSoundPeakSplDb(), 0.01);
+        assertEquals((Integer) 0x000000, m.getMeasurementSequenceNumber());
         assertFalse(m.isCalibrationInProgress());
     }
 
@@ -644,6 +571,21 @@ public class ParserTest extends TestCase {
         RuuviMeasurement m = parser.parse(dataWithCompany(buf));
         assertEquals((Integer) 0xE1, m.getDataFormat());
         assertEquals(25.0, m.getTemperature(), 0.01);
+        assertEquals(50000.0, m.getPressure());
+        assertEquals(0.0, m.getHumidity());
+        assertEquals(0.0, m.getPm1());
+        assertEquals(0.0, m.getPm25());
+        assertEquals(0.0, m.getPm4());
+        assertEquals(0.0, m.getPm10());
+        assertEquals((Integer) 0, m.getCo2());
+        assertEquals((Integer) 0, m.getVocIndex());
+        assertEquals((Integer) 0, m.getNoxIndex());
+        assertEquals(0.0, m.getLuminosity());
+        // assertEquals(18.0, m.getSoundInstantDbA(), 0.01);
+        // assertEquals(18.0, m.getSoundAverageDbA(), 0.01);
+        // assertEquals(18.0, m.getSoundPeakSplDb(), 0.01);
+        assertEquals((Integer) 0x000000, m.getMeasurementSequenceNumber());
+        assertFalse(m.isCalibrationInProgress());
     }
 
     /**
@@ -675,7 +617,22 @@ public class ParserTest extends TestCase {
         };
         RuuviMeasurement m = parser.parse(dataWithCompany(buf));
         assertEquals((Integer) 0xE1, m.getDataFormat());
+        assertEquals(0.0, m.getTemperature());
+        assertEquals(50000.0, m.getPressure());
         assertEquals(70.0, m.getHumidity(), 0.01);
+        assertEquals(0.0, m.getPm1());
+        assertEquals(0.0, m.getPm25());
+        assertEquals(0.0, m.getPm4());
+        assertEquals(0.0, m.getPm10());
+        assertEquals((Integer) 0, m.getCo2());
+        assertEquals((Integer) 0, m.getVocIndex());
+        assertEquals((Integer) 0, m.getNoxIndex());
+        assertEquals(0.0, m.getLuminosity());
+        // assertEquals(18.0, m.getSoundInstantDbA(), 0.01);
+        // assertEquals(18.0, m.getSoundAverageDbA(), 0.01);
+        // assertEquals(18.0, m.getSoundPeakSplDb(), 0.01);
+        assertEquals((Integer) 0x000000, m.getMeasurementSequenceNumber());
+        assertFalse(m.isCalibrationInProgress());
     }
 
     /**
@@ -707,7 +664,22 @@ public class ParserTest extends TestCase {
         };
         RuuviMeasurement m = parser.parse(dataWithCompany(buf));
         assertEquals((Integer) 0xE1, m.getDataFormat());
+        assertEquals(0.0, m.getTemperature());
         assertEquals(100000.0, m.getPressure());
+        assertEquals(0.0, m.getHumidity());
+        assertEquals(0.0, m.getPm1());
+        assertEquals(0.0, m.getPm25());
+        assertEquals(0.0, m.getPm4());
+        assertEquals(0.0, m.getPm10());
+        assertEquals((Integer) 0, m.getCo2());
+        assertEquals((Integer) 0, m.getVocIndex());
+        assertEquals((Integer) 0, m.getNoxIndex());
+        assertEquals(0.0, m.getLuminosity());
+        // assertEquals(18.0, m.getSoundInstantDbA(), 0.01);
+        // assertEquals(18.0, m.getSoundAverageDbA(), 0.01);
+        // assertEquals(18.0, m.getSoundPeakSplDb(), 0.01);
+        assertEquals((Integer) 0x000000, m.getMeasurementSequenceNumber());
+        assertFalse(m.isCalibrationInProgress());
     }
 
     /**
@@ -739,7 +711,22 @@ public class ParserTest extends TestCase {
         };
         RuuviMeasurement m = parser.parse(dataWithCompany(buf));
         assertEquals((Integer) 0xE1, m.getDataFormat());
+        assertEquals(0.0, m.getTemperature());
+        assertEquals(50000.0, m.getPressure());
+        assertEquals(0.0, m.getHumidity());
         assertEquals(700.0, m.getPm1(), 0.01);
+        assertEquals(0.0, m.getPm25());
+        assertEquals(0.0, m.getPm4());
+        assertEquals(0.0, m.getPm10());
+        assertEquals((Integer) 0, m.getCo2());
+        assertEquals((Integer) 0, m.getVocIndex());
+        assertEquals((Integer) 0, m.getNoxIndex());
+        assertEquals(0.0, m.getLuminosity());
+        // assertEquals(18.0, m.getSoundInstantDbA(), 0.01);
+        // assertEquals(18.0, m.getSoundAverageDbA(), 0.01);
+        // assertEquals(18.0, m.getSoundPeakSplDb(), 0.01);
+        assertEquals((Integer) 0x000000, m.getMeasurementSequenceNumber());
+        assertFalse(m.isCalibrationInProgress());
     }
 
     /**
@@ -771,7 +758,22 @@ public class ParserTest extends TestCase {
         };
         RuuviMeasurement m = parser.parse(dataWithCompany(buf));
         assertEquals((Integer) 0xE1, m.getDataFormat());
+        assertEquals(0.0, m.getTemperature());
+        assertEquals(50000.0, m.getPressure());
+        assertEquals(0.0, m.getHumidity());
+        assertEquals(0.0, m.getPm1());
         assertEquals(700.0, m.getPm25(), 0.01);
+        assertEquals(0.0, m.getPm4());
+        assertEquals(0.0, m.getPm10());
+        assertEquals((Integer) 0, m.getCo2());
+        assertEquals((Integer) 0, m.getVocIndex());
+        assertEquals((Integer) 0, m.getNoxIndex());
+        assertEquals(0.0, m.getLuminosity());
+        // assertEquals(18.0, m.getSoundInstantDbA(), 0.01);
+        // assertEquals(18.0, m.getSoundAverageDbA(), 0.01);
+        // assertEquals(18.0, m.getSoundPeakSplDb(), 0.01);
+        assertEquals((Integer) 0x000000, m.getMeasurementSequenceNumber());
+        assertFalse(m.isCalibrationInProgress());
     }
 
     /**
@@ -803,7 +805,22 @@ public class ParserTest extends TestCase {
         };
         RuuviMeasurement m = parser.parse(dataWithCompany(buf));
         assertEquals((Integer) 0xE1, m.getDataFormat());
+        assertEquals(0.0, m.getTemperature());
+        assertEquals(50000.0, m.getPressure());
+        assertEquals(0.0, m.getHumidity());
+        assertEquals(0.0, m.getPm1());
+        assertEquals(0.0, m.getPm25());
         assertEquals(700.0, m.getPm4(), 0.01);
+        assertEquals(0.0, m.getPm10());
+        assertEquals((Integer) 0, m.getCo2());
+        assertEquals((Integer) 0, m.getVocIndex());
+        assertEquals((Integer) 0, m.getNoxIndex());
+        assertEquals(0.0, m.getLuminosity());
+        // assertEquals(18.0, m.getSoundInstantDbA(), 0.01);
+        // assertEquals(18.0, m.getSoundAverageDbA(), 0.01);
+        // assertEquals(18.0, m.getSoundPeakSplDb(), 0.01);
+        assertEquals((Integer) 0x000000, m.getMeasurementSequenceNumber());
+        assertFalse(m.isCalibrationInProgress());
     }
 
     /**
@@ -835,7 +852,22 @@ public class ParserTest extends TestCase {
         };
         RuuviMeasurement m = parser.parse(dataWithCompany(buf));
         assertEquals((Integer) 0xE1, m.getDataFormat());
+        assertEquals(0.0, m.getTemperature());
+        assertEquals(50000.0, m.getPressure());
+        assertEquals(0.0, m.getHumidity());
+        assertEquals(0.0, m.getPm1());
+        assertEquals(0.0, m.getPm25());
+        assertEquals(0.0, m.getPm4());
         assertEquals(700.0, m.getPm10(), 0.01);
+        assertEquals((Integer) 0, m.getCo2());
+        assertEquals((Integer) 0, m.getVocIndex());
+        assertEquals((Integer) 0, m.getNoxIndex());
+        assertEquals(0.0, m.getLuminosity());
+        // assertEquals(18.0, m.getSoundInstantDbA(), 0.01);
+        // assertEquals(18.0, m.getSoundAverageDbA(), 0.01);
+        // assertEquals(18.0, m.getSoundPeakSplDb(), 0.01);
+        assertEquals((Integer) 0x000000, m.getMeasurementSequenceNumber());
+        assertFalse(m.isCalibrationInProgress());
     }
 
     /**
@@ -867,7 +899,22 @@ public class ParserTest extends TestCase {
         };
         RuuviMeasurement m = parser.parse(dataWithCompany(buf));
         assertEquals((Integer) 0xE1, m.getDataFormat());
+        assertEquals(0.0, m.getTemperature());
+        assertEquals(50000.0, m.getPressure());
+        assertEquals(0.0, m.getHumidity());
+        assertEquals(0.0, m.getPm1());
+        assertEquals(0.0, m.getPm25());
+        assertEquals(0.0, m.getPm4());
+        assertEquals(0.0, m.getPm10());
         assertEquals((Integer) 35000, m.getCo2());
+        assertEquals((Integer) 0, m.getVocIndex());
+        assertEquals((Integer) 0, m.getNoxIndex());
+        assertEquals(0.0, m.getLuminosity());
+        // assertEquals(18.0, m.getSoundInstantDbA(), 0.01);
+        // assertEquals(18.0, m.getSoundAverageDbA(), 0.01);
+        // assertEquals(18.0, m.getSoundPeakSplDb(), 0.01);
+        assertEquals((Integer) 0x000000, m.getMeasurementSequenceNumber());
+        assertFalse(m.isCalibrationInProgress());
     }
 
     /**
@@ -899,7 +946,22 @@ public class ParserTest extends TestCase {
         };
         RuuviMeasurement m = parser.parse(dataWithCompany(buf));
         assertEquals((Integer) 0xE1, m.getDataFormat());
+        assertEquals(0.0, m.getTemperature());
+        assertEquals(50000.0, m.getPressure());
+        assertEquals(0.0, m.getHumidity());
+        assertEquals(0.0, m.getPm1());
+        assertEquals(0.0, m.getPm25());
+        assertEquals(0.0, m.getPm4());
+        assertEquals(0.0, m.getPm10());
+        assertEquals((Integer) 0, m.getCo2());
         assertEquals((Integer) 499, m.getVocIndex());
+        assertEquals((Integer) 0, m.getNoxIndex());
+        assertEquals(0.0, m.getLuminosity());
+        // assertEquals(18.0, m.getSoundInstantDbA(), 0.01);
+        // assertEquals(18.0, m.getSoundAverageDbA(), 0.01);
+        // assertEquals(18.0, m.getSoundPeakSplDb(), 0.01);
+        assertEquals((Integer) 0x000000, m.getMeasurementSequenceNumber());
+        assertFalse(m.isCalibrationInProgress());
     }
 
     /**
@@ -931,7 +993,22 @@ public class ParserTest extends TestCase {
         };
         RuuviMeasurement m = parser.parse(dataWithCompany(buf));
         assertEquals((Integer) 0xE1, m.getDataFormat());
+        assertEquals(0.0, m.getTemperature());
+        assertEquals(50000.0, m.getPressure());
+        assertEquals(0.0, m.getHumidity());
+        assertEquals(0.0, m.getPm1());
+        assertEquals(0.0, m.getPm25());
+        assertEquals(0.0, m.getPm4());
+        assertEquals(0.0, m.getPm10());
+        assertEquals((Integer) 0, m.getCo2());
+        assertEquals((Integer) 0, m.getVocIndex());
         assertEquals((Integer) 497, m.getNoxIndex());
+        assertEquals(0.0, m.getLuminosity());
+        // assertEquals(18.0, m.getSoundInstantDbA(), 0.01);
+        // assertEquals(18.0, m.getSoundAverageDbA(), 0.01);
+        // assertEquals(18.0, m.getSoundPeakSplDb(), 0.01);
+        assertEquals((Integer) 0x000000, m.getMeasurementSequenceNumber());
+        assertFalse(m.isCalibrationInProgress());
     }
 
     /**
@@ -963,7 +1040,22 @@ public class ParserTest extends TestCase {
         };
         RuuviMeasurement m = parser.parse(dataWithCompany(buf));
         assertEquals((Integer) 0xE1, m.getDataFormat());
+        assertEquals(0.0, m.getTemperature());
+        assertEquals(50000.0, m.getPressure());
+        assertEquals(0.0, m.getHumidity());
+        assertEquals(0.0, m.getPm1());
+        assertEquals(0.0, m.getPm25());
+        assertEquals(0.0, m.getPm4());
+        assertEquals(0.0, m.getPm10());
+        assertEquals((Integer) 0, m.getCo2());
+        assertEquals((Integer) 0, m.getVocIndex());
+        assertEquals((Integer) 0, m.getNoxIndex());
         assertEquals(144000.02, m.getLuminosity(), 0.01);
+        // assertEquals(18.0, m.getSoundInstantDbA(), 0.01);
+        // assertEquals(18.0, m.getSoundAverageDbA(), 0.01);
+        // assertEquals(18.0, m.getSoundPeakSplDb(), 0.01);
+        assertEquals((Integer) 0x000000, m.getMeasurementSequenceNumber());
+        assertFalse(m.isCalibrationInProgress());
     }
 
     // /**
@@ -1100,7 +1192,22 @@ public class ParserTest extends TestCase {
         };
         RuuviMeasurement m = parser.parse(dataWithCompany(buf));
         assertEquals((Integer) 0xE1, m.getDataFormat());
+        assertEquals(0.0, m.getTemperature());
+        assertEquals(50000.0, m.getPressure());
+        assertEquals(0.0, m.getHumidity());
+        assertEquals(0.0, m.getPm1());
+        assertEquals(0.0, m.getPm25());
+        assertEquals(0.0, m.getPm4());
+        assertEquals(0.0, m.getPm10());
+        assertEquals((Integer) 0, m.getCo2());
+        assertEquals((Integer) 0, m.getVocIndex());
+        assertEquals((Integer) 0, m.getNoxIndex());
+        assertEquals(0.0, m.getLuminosity());
+        // assertEquals(18.0, m.getSoundInstantDbA(), 0.01);
+        // assertEquals(18.0, m.getSoundAverageDbA(), 0.01);
+        // assertEquals(18.0, m.getSoundPeakSplDb(), 0.01);
         assertEquals((Integer) 0xABCDEF, m.getMeasurementSequenceNumber());
+        assertFalse(m.isCalibrationInProgress());
     }
 
     /**
