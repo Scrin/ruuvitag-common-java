@@ -1801,4 +1801,24 @@ public class ParserTest extends TestCase {
         assertEquals((Integer) 0, m.getMeasurementSequenceNumber());
         assertFalse(m.isCalibrationInProgress());
     }
+
+    @Test
+    public void testInvalidNotHex() {
+        assertNull(parser.parse("XXX".getBytes()));
+    }
+
+    @Test
+    public void testInvalidTooShort1() {
+        assertNull(parser.parse("0".getBytes()));
+    }
+
+    @Test
+    public void testInvalidTooShort2() {
+        assertNull(parser.parse("00".getBytes()));
+    }
+
+    @Test
+    public void testInvalidTooShort3() {
+        assertNull(parser.parse("000".getBytes()));
+    }
 }
