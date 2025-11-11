@@ -189,7 +189,6 @@ public class RuuviMeasurement {
         this.accelerationZ = accelerationZ;
     }
 
-
     /**
      * Get battery voltage, in Volts.
      *
@@ -381,30 +380,6 @@ public class RuuviMeasurement {
 
     public void setCalibrationInProgress(Boolean calibrationInProgress) {
         this.calibrationInProgress = calibrationInProgress;
-    }
-
-    /**
-     * Calculate Air Quality Index from PM2.5 and CO2 measurements.
-     * <p>
-     * For algorithm details, see https://github.com/ruuvi/com.ruuvi.station.webui/blob/master/src/decoder/untils.js
-     *
-     * @return Air Quality Index (0-100, higher = better) or null if not available
-     */
-    public Double calculateAirQualityIndex() {
-        if (pm25 == null || co2 == null) {
-            return null;
-        }
-
-        double pm = Math.max(0, Math.min(60, pm25));
-        double co2Val = Math.max(420, Math.min(2300, co2));
-
-        double dx = pm * (100.0 / 60.0);
-        double dy = (co2Val - 420) * (100.0 / 1880.0);
-
-        double r = Math.sqrt(dx * dx + dy * dy);
-        double aqi = 100 - r;
-
-        return Math.max(0, Math.min(100, aqi));
     }
 
     @Override
