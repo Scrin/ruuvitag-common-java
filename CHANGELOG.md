@@ -1,6 +1,6 @@
 # Changelog
 
-## v1.1.0 (unreleased)
+## v1.1.0
 
 - Added support for Ruuvi Data Format 6 (Ruuvi Air with air quality measurements)
 - Added support for Ruuvi Data Format E1 (Extended v1 - Ruuvi Air BT5.0+ with enhanced measurements)

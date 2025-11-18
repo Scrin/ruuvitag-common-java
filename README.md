@@ -29,7 +29,7 @@ Alternative option: You can also clone this repository, then build and install t
 <dependency>
     <groupId>fi.tkgwf.ruuvi</groupId>
     <artifactId>ruuvitag-common</artifactId>
-    <version>1.0.2</version>
+    <version>1.1.0</version>
 </dependency>
 ```
 
