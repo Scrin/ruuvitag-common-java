@@ -3,10 +3,9 @@
   <groupId>fi.tkgwf.ruuvi</groupId>
   <artifactId>ruuvitag-common</artifactId>
   <versioning>
-    <release>1.0.2</release>
     <versions>
-      <version>1.0.2</version>
+      <version>1.1.0-SNAPSHOT</version>
     </versions>
-    <lastUpdated>20220813112542</lastUpdated>
+    <lastUpdated>20251118200011</lastUpdated>
   </versioning>
 </metadata>
